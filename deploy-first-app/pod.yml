@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
+# dokcer run -d ngnix:1.14.2 --name:ngnix -p 80:80 is the equivalent
+# of above in case of docker.
