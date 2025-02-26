@@ -33,7 +33,7 @@ kubectl get nodes
 2. Then run
 
 ```
-kubectl create -f pod.yml
+kubectl create -f <yaml_file>
 ```
 3. Get the information of the pods by running:
 
