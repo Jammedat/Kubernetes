@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: time-check
+  namespace: nautilus
+spec:
+  volumes:
+  - name: log-volume
+    emptyDir: {}
+  containers:
+  - name: time-check
+    image: busybox:latest
+    envFrom:
+    - configMapRef:
+        name: time-config
+    command: ["/bin/sh", "-c"]
+    args:
+    - while true; do date; sleep $TIME_FREQ;done >> /opt/finance/time/time-check.log
+    volumeMounts:
+    - mountPath: /opt/finance/time
+      name: log-volume
+
+  
