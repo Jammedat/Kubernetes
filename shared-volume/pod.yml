@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-share-xfuison
+spec:
+  volumes:
+    - name: volume-share
+      emptyDir: {}
+  containers:
+    - name: volume-container-xfusion-1
+      image: debian:latest
+      command: ["/bin/bash", "-c"]
+      args:
+      - sleep infinity
+      volumeMounts:
+      - mountPath: /tmp/media
+        name: volume-share
+
+    - name: volume-container-xfusion-2
+      image: debian:latest
+      command: ["/bin/bash", "-c"]
+      args:
+      - sleep infinity
+      volumeMounts:
+      - mountPath: /tmp/demo
+        name: volume-share
