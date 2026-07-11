@@ -1,0 +1,48 @@
+# sync windows example
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: banking-project
+  namespace: argocd
+spec:
+  description: "Project with business hour sync restrictions"
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  # Sync Window rule
+  syncWindows:
+  - kind: deny
+    schedule: '0 9 * * 1-6' # 09 am, 1 == monday, 6 == saturday 
+    duration: 8h
+    applications:
+      - '*'
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-app
+  namespace: argocd
+spec:
+  project: banking-project # linking the above project
+
+  source:
+    repoURL: https://github.com/Jammedat/Kubernetes.git
+    targetRevision: HEAD
+    path: gitops-demo/apps/nginx
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
